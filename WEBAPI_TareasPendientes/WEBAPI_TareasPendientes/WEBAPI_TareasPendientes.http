@@ -1,0 +1,6 @@
+@WEBAPI_TareasPendientes_HostAddress = http://localhost:5237
+
+GET {{WEBAPI_TareasPendientes_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
