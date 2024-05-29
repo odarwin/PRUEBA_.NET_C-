@@ -1,0 +1,34 @@
+﻿<h3>Login</h3>
+@inject AuthService AuthService
+
+@code {
+    private LoginModel loginModel = new();
+    private string message;
+    private async Task HandleLogin()
+    {
+        try
+        {
+            var token = await AuthService.Login(loginModel);
+            message = "Login Exitoso!";
+        }
+        catch (Exception ex)
+        {
+            message = "Login Fallido: " + ex.Message;
+        }
+    }
+}
+<h3>Login</h3>
+<EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>Username:</label>
+        <InputText @bind-Value="loginModel.Username" />
+    </div>
+    <div>
+        <label>Password:</label>
+        <InputText @bind-Value="loginModel.Password" type="password" />
+    </div>
+    <button type="submit">Login</button>
+</EditForm>
+<p>@message</p>

@@ -1,0 +1,53 @@
+﻿@page "/tareas"
+@inject TareasService TareasService
+@using BlazorApp.Models
+
+<h3>TareasPendientes</h3>
+
+@if (tareas == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var tarea in tareas)
+        {
+            <li>@tarea.Nombre</li>
+            <button class="btn btn-sm btn-primary" @onclick="() => EditTarea(tarea)"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-sm btn-danger" @onclick="() => DeleteTarea(tarea.ID)"><i class="fas fa-trash"></i></button>
+        }
+    </ul>
+}
+<EditTareaModal IsVisible="isEditModalVisible" Tarea="tareaToEdit" OnSave="SaveTarea" OnClose="CloseEditModal" />
+
+@code {
+    private IEnumerable<TareasPendientes> tareas;
+    private TareasPendientes tareaToEdit = new();
+    private bool isEditModalVisible = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tareas = await TareasService.GetTareasPendientesAsync();
+    }
+    private void EditTarea(TareasPendientes tarea)
+    {
+        tareaToEdit = tarea;
+        isEditModalVisible = true;
+    }
+    private async Task SaveTarea()
+    {
+        await TareasPendientesService.UpdateTareaPendienteAsync(tareaToEdit.ID, tareaToEdit);
+        isEditModalVisible = false;
+        tareas = await TareasPendientesService.GetTareasPendientesAsync();
+    }
+    private async Task DeleteTarea(int id)
+    {
+        await TareasPendientesService.DeleteTareaPendienteAsync(id);
+        tareas = await TareasPendientesService.GetTareasPendientesAsync();
+    }
+    private void CloseEditModal()
+    {
+        isEditModalVisible = false;
+    }
+}

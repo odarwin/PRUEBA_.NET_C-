@@ -1,0 +1,36 @@
+﻿@page "/crear-tarea"
+@inject TareasService TareasService
+@using BlazorApp.Models
+
+<h3>CreateTarea</h3>
+
+<EditForm Model="newTarea" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Nombre:</label>
+        <InputText @bind-Value="newTarea.Nombre" />
+    </div>
+    <div>
+        <label>Descripción:</label>
+        <InputTextArea @bind-Value="newTarea.Descripcion" />
+    </div>
+    <div>
+        <label>Completada:</label>
+        <InputCheckbox @bind-Value="newTarea.Completada" />
+    </div>
+    <button type="submit">Crear</button>
+</EditForm>
+<p>@message</p>
+
+@code {
+    private TareasPendientes newTarea = new();
+    private string message;
+
+    private async Task HandleValidSubmit()
+    {
+        await TareasService.CreateTareaPendienteAsync(newTarea);
+        message = "Tarea creada con éxito!";
+    }
+}
