@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WEBAPI_TareasPendientes.Models;
 
 namespace WEBAPI_TareasPendientes.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TareasPendientesController : ControllerBase
